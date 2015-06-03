@@ -10,10 +10,15 @@
         height: 100%;
       }
       .container {
+        display: -webkit-box;
+        display: -webkit-flex;
         display: flex;
         width: 100%;
         height: 100%;
+        -webkit-align-items: center;
+
         align-items: center;
+        -webkit-justify-content: center;
         justify-content: center;
       }
       .logo {
@@ -22,11 +27,78 @@
         width: 600px;
         height: 337.5px;
       }
+      svg {
+        width: 33%;
+        height: 33%;
+      }
+      @-webkit-keyframes colormate {
+        from { fill: none; }
+        to { fill: #cf4647; }
+      }
+      @keyframes colormate {
+        from { fill: none; }
+        to { fill: #cf4647; }
+      }
+      path {
+        -webkit-transition: stroke-dashoffset 1.5s ease-in-out; 
+        transition: stroke-dashoffset 1.5s ease-in-out;
+        -webkit-animation-name: colormate;
+        -webkit-animation-duration: 15s;
+        -webkit-animation-timing-function: linear;
+        animation: colormate 15s;
+        // BUG: not working in safari
+      } 
+
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="logo"></div>
+      <svg version="1.1" viewBox="0 0 654.167 340.277" class="line-logo">
+        <g>
+          <path fill="#cf4647" stroke="#cf4647" stroke-miterlimit="10" d="M131.194,66.683v206.489c0,27.982-13.714,41.975-41.128,41.975
+            H36.642V25.131h53.424C117.48,25.131,131.194,38.984,131.194,66.683z M101.514,71.771c0-6.784-1.398-11.66-4.194-14.628
+            c-2.796-2.968-6.565-4.452-11.309-4.452h-19.69v234.897h19.69c4.743,0,8.513-1.484,11.309-4.453s4.194-7.844,4.194-14.627V71.771z"
+            />
+          <path fill="#cf4647" stroke="#cf4647" stroke-miterlimit="10" d="M305.458,315.146h-29.68v-106c0-7.346-1.557-12.295-4.664-14.84
+            c-3.114-2.543-6.784-3.816-11.024-3.816h-15.688v124.656h-29.68V25.131h54.021c5.062,0,9.845,0.921,14.35,2.756
+            c4.498,1.841,8.367,4.386,11.601,7.632c3.232,3.253,5.837,7.069,7.811,11.448c1.968,4.386,2.955,9.116,2.955,14.204v89.888
+            c0,5.657-0.63,10.175-1.882,13.568c-1.259,3.393-2.584,5.936-3.975,7.633c-1.67,1.98-3.485,3.391-5.433,4.238
+            c1.947,1.135,3.763,2.969,5.433,5.514c1.391,2.266,2.716,5.16,3.975,8.691c1.252,3.537,1.882,7.99,1.882,13.355V315.146z
+             M271.113,159.326c3.107-2.397,4.664-6.849,4.664-13.355v-76.32c0-5.651-1.557-9.54-4.664-11.66
+            c-3.114-2.12-6.784-3.18-11.024-3.18h-15.688v108.121h15.688C264.33,162.932,268,161.732,271.113,159.326z"/>
+          <path fill="#cf4647" stroke="#cf4647" stroke-miterlimit="10" d="M489.474,315.146h-32.648L430.96,115.019l-26.287,200.127h-32.648
+            l44.096-290.016h15.689c6.498,0,10.666,1.63,12.508,4.876c1.834,3.253,3.033,6.857,3.604,10.812L489.474,315.146z"/>
+          <path fill="#cf4647" stroke="#cf4647" stroke-miterlimit="10" d="M631.089,25.131l-35.615,169.176v120.84h-20.775
+            c-2.545,0-4.664-0.848-6.361-2.543c-1.695-1.697-2.543-3.67-2.543-5.938V194.307L530.179,25.131h21.623
+            c0.562,0,2.119,0.424,4.664,1.272c2.545,0.848,4.24,3.677,5.088,8.48l19.08,110.24l19.08-110.24
+            c0.562-4.518,2.119-7.274,4.664-8.268c2.543-0.987,4.094-1.484,4.664-1.484H631.089z"/>
+        </g>
     </div>
+    <script>
+      function lineDraw(){
+        // Gracefully inspired by http://codepen.io/derekjp/pen/KIGFe
+        var paths = document.querySelectorAll('.line-logo path');
+        var path, length;
+        for (var idx = 0; idx < paths.length; idx++ ) {
+          path = paths[idx];
+          length = path.getTotalLength();
+          path.style.transition = path.style.WebkitTransition =
+            'none';
+
+          path.style.strokeDasharray = length + ' ' + length; 
+          path.style.strokeDashoffset = length;
+
+          path.getBoundingClientRect();
+          path.style.transition = path.style.WebkitTransition =
+            'stroke-dashoffset 7s ease-in-out';
+          path.style.strokeDashoffset = '0';
+        };
+      }
+
+      // On load
+      window.onload = function(){
+        lineDraw();
+      };
+    </script>
   </body>
 </html>
